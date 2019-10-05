@@ -12,23 +12,28 @@
 	  (has-list-p (cdr lst)))))
 
 ;;; ex 2-8
-(defun print-dots (n)
+(defun print-dots-recursive (n)
   (unless (= n 0)
 	 (format t ".")
-	 (print-dots (1- N))))
+	 (print-dots-recursive (1- N))))
 
-(defun get-a-count-old (lst)
-  (if (not lst)
-      0
-      (if (eql 'a (car lst))
-	  (1+ (get-a-count (cdr lst)))
-	  (get-a-count (cdr lst))
-	  )))
-
-(defun get-a-count (lst)
+(defun get-a-count-recursive (lst)
   (cond ((not lst) 0)
-	((eql 'a (car lst)) (1+ (get-a-count (cdr lst))))
-	(t (get-a-count (cdr lst)))))
+	((eql 'a (car lst)) (1+ (get-a-count-recursive (cdr lst))))
+	(t (get-a-count-recursive (cdr lst)))))
+
+(defun print-dots-iterative (n)
+  (do ((i 1 (1+ i)))
+      ((> i n) nil)
+    (format t ".")))
+
+(defun get-a-count-iterative (lst)
+  (let ((num 0))
+    (loop for obj in lst
+	 do (if (eql 'a obj)
+	     (incf num)
+	     nil))
+    num))
 
 ;;; ex 2-9
 (defun summit-old (lst)
