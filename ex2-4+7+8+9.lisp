@@ -36,13 +36,6 @@
     num))
 
 ;;; ex 2-9
-(defun summit-old (lst)
-  (if (not lst)
-      0
-      (if (null (car lst))
-	  (summit (cdr lst))
-	  (+ (car lst) (summit (cdr lst))))))
-
 (defun summit (lst)
   (cond ((not lst) 0)
 	((null (car lst)) (summit (cdr lst)))
