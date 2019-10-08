@@ -1,4 +1,4 @@
-(defun show-dots-helper (lst)
+(defun show-dots-helper-old (lst)
   (cond ((and lst (atom lst))
 	 (write-to-string lst))
 	((not (null lst))
@@ -6,10 +6,10 @@
 	(t "NIL")
 	))
 
-(defun show-dots (lst)
+(defun show-dots-old (lst)
   (format t (show-dots-helper lst)))
 
-(defun show-list-content (lst)
+(defun show-list-content-old (lst)
   (cond ((and (null (cdr lst)) (atom (car lst)))
 	 (write-to-string (car lst)))
 	((and (null (cdr lst)) (consp (car lst)))
@@ -24,12 +24,10 @@
 	 (concatenate 'string "[" (show-list-content (car lst)) "]" " " (show-list-content (cdr lst))))
 	(t "")))
 
-(defun show-list (lst)
+(defun show-list-old (lst)
   (if (atom lst)
       (format t (write-to-string lst))
       (format t (concatenate 'string "[" (show-list-content lst) "]"))))
 
-
-
-
-      ;;;(format t (concatenate 'string "[" (show-list-content lst) "]"))))
+(defun show-dots (lst)
+  
