@@ -1,0 +1,12 @@
+(defparameter *facts*
+  '((tweety isa canary)
+    (canary isa bird)
+    (bird isa animal)
+    (chilly isa penguin)
+    (penguin isa bird)
+    (tweety isa pet)
+    (pet isa animal)
+    (bird can fly)
+    (animal cannot fly)
+    (pet cannot fly)
+    (penguin cannot fly)))

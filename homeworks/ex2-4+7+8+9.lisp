@@ -6,19 +6,23 @@
 
 ;;; ex2-7
 (defun has-list-p (lst)
-  (if (not lst)
-      nil
-      (or (listp (car lst))
-	  (has-list-p (cdr lst)))))
+  (cond ((null lst)
+	 nil)
+	((listp (car lst))
+	 t)
+	((has-list-p (cdr lst))
+	 t)
+	(t
+	 nil)))	
 
 ;;; ex 2-8
 (defun print-dots-recursive (n)
   (unless (= n 0)
-	 (format t ".")
-	 (print-dots-recursive (1- N))))
+    (format t ".")
+    (print-dots-recursive (1- n))))
 
 (defun get-a-count-recursive (lst)
-  (cond ((not lst) 0)
+  (cond ((null lst) 0)
 	((eql 'a (car lst)) (1+ (get-a-count-recursive (cdr lst))))
 	(t (get-a-count-recursive (cdr lst)))))
 
@@ -27,16 +31,14 @@
       ((> i n) nil)
     (format t ".")))
 
-(defun get-a-count-iterative (lst)
-  (let ((num 0))
-    (loop for obj in lst
-	 do (if (eql 'a obj)
-	     (incf num)
-	     nil))
-    num))
+(defun get-a-count (lst)
+  (loop for obj in lst count (equalp 'a obj)))
 
 ;;; ex 2-9
 (defun summit (lst)
-  (cond ((not lst) 0)
+  (apply #'+ (remove nil lst)))
+
+(defun summit (lst)
+  (cond ((null lst) 0)
 	((null (car lst)) (summit (cdr lst)))
 	(t (+ (car lst) (summit (cdr lst))))))
