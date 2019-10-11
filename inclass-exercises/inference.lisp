@@ -1,0 +1,13 @@
+(defun isa (x y)
+  (or (eql x y)
+      (some (lambda (fact)
+	      (and (eql (car fact) x)
+		   (eql (cadr fact) 'isa)
+		   (isa (caddr fact) y)))
+	    *facts*)))
+
+(defun retrieve (x y)
+  (remove-if-not (lambda (fact)
+		   (and (eql y (caddr fact))
+			(isa x (car fact))))
+		 *facts*))
