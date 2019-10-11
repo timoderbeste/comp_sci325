@@ -6,14 +6,8 @@
 
 ;;; ex2-7
 (defun has-list-p (lst)
-  (cond ((null lst)
-	 nil)
-	((listp (car lst))
-	 t)
-	((has-list-p (cdr lst))
-	 t)
-	(t
-	 nil)))	
+  (cond ((null lst) nil)
+	(t (or (listp (car lst)) (has-list-p (cdr lst))))))
 
 ;;; ex 2-8
 (defun print-dots-recursive (n)
@@ -32,7 +26,7 @@
     (format t ".")))
 
 (defun get-a-count (lst)
-  (loop for obj in lst count (equalp 'a obj)))
+  (loop for obj in lst count (eql 'a obj)))
 
 ;;; ex 2-9
 (defun summit (lst)
