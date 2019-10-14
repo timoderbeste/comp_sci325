@@ -7,7 +7,9 @@
 ;;; ex2-7
 (defun has-list-p (lst)
   (cond ((null lst) nil)
-	(t (or (listp (car lst)) (has-list-p (cdr lst))))))
+	((listp (car lst)) t)
+	((has-list-p (cdr lst)) t)
+	(t nil)))
 
 ;;; ex 2-8
 (defun print-dots-recursive (n)
