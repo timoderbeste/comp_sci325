@@ -13,9 +13,6 @@
 	 (format t " . ~S" lst))
 	((null (car lst))
 	 (format t ""))
-	((atom (car lst))
-	 (format t " ~S" (car lst))
-	 (show-list-content (cdr lst)))
 	(t
 	 (format t " ")
 	 (show-list (car lst))
@@ -26,10 +23,6 @@
 	 (format t "~S" lst))
 	((null lst)
 	 (format t ""))
-	((atom (car lst))
-	 (format t "[~S" (car lst))
-	 (show-list-content (cdr lst))
-	 (format t "]"))
 	(t
 	 (format t "[")
 	 (show-list (car lst))
