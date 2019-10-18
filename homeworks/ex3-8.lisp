@@ -9,10 +9,10 @@
 	 (format t ")"))))
 
 (defun show-list-content (lst)
-  (cond ((and (atom lst) (not (null lst)))
+  (cond ((null lst)
+	 nil)
+	((atom lst)
 	 (format t " . ~S" lst))
-	((null (car lst))
-	 (format t ""))
 	(t
 	 (format t " ")
 	 (show-list (car lst))
@@ -22,7 +22,7 @@
   (cond ((atom lst)
 	 (format t "~S" lst))
 	((null lst)
-	 (format t ""))
+	 nil)
 	(t
 	 (format t "[")
 	 (show-list (car lst))
