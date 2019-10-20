@@ -28,3 +28,14 @@
 (defun query (triple)
   (remove-if-not (lambda (fact) (match triple fact))
 		 *facts*))
+
+
+(defun query-triple (query blists)
+  (mapcan (lambda (fact) (match query fact blists))
+       *facts*))
+
+(defun query-graph (triples &optional (blists '(())))
+  (cond ((null triples) blists)
+	((null blists) nil)
+	(t (query-graph (cdr triples)
+			(query-triple (car triples) blists)))))
