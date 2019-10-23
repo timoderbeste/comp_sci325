@@ -1,0 +1,18 @@
+(defun bin-search (obj vec)
+  (let ((len (length vec)))
+    (and (not (zerop len))
+	 (finder obj vec 0 (1- len)))))
+
+(defun finder (obj vec start end)
+  (let ((range (- end start)))
+    (if (zerop range)
+	(if (eql obj (aref vec start))
+	    obj
+	    nil)
+	(let ((mid (+ start (round (/ range 2)))))
+	  (let ((obj2 (aref vec mid)))
+	    (if (< obj obj2)
+		(finder obj vec start (1- mid))
+		(if (> obj obj2)
+		    (finder obj vec (1+ mid) end)
+		    obj)))))))
