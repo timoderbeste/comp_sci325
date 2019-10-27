@@ -1,0 +1,10 @@
+(defun max-min (vec &key (start 0) (end (length vec)))
+  (cond ((= start end)
+	 (values nil nil))
+	((= (1+ start) end)
+	 (let ((val (aref vec start)))
+	   (values val val)))
+	(t
+	 (let ((val (aref vec start)))
+	   (multiple-value-bind (max-val min-val) (max-min vec :start (1+ start) :end end)
+	     (values (max max-val val) (min min-val val)))))))
