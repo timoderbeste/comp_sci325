@@ -1,9 +1,11 @@
-(defun map-file (function pathname))
+(defun map-file (function pathname)
+  (with-open-file (in pathname)
+    (do ((exp (read in nil 'the-end) (read in nil 'the-end)))
+	((eql exp 'the-end))
+      (funcall function exp))))
 
 (defun map-stream (function stream)
-  (let ((exps nil))
-    (do ((exp (read stream nil) (read stream nil)))
-	((null exp) (length exps))
-      (print exp)
-      (push exp exps))
-    (nreverse (mapcar function exps))))
+  (do ((exp (read stream nil 'the-end-my-life) (read stream nil 'the-end-my-life)))
+      ((eql exp 'the-end-my-life))
+    (funcall function exp)))
+
