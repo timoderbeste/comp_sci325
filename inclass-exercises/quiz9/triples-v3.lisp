@@ -31,6 +31,7 @@
         ((null fact) (length *facts*))
       (push fact *facts*))))
 
+;;; returna a list with values for each queried variable
 (defun query-graph (triples &optional (blists '(())))
   (cond ((null triples) blists)
         ((null blists) nil)
@@ -64,6 +65,7 @@
           ((eql (cadr binding) item) blist)
           (t nil))))
 
+;;; check if a symbol is a variable to be queried.
 (defun var-p (x)
   (and (symbolp x)
        (eql (char (symbol-name x) 0) #\?)))
