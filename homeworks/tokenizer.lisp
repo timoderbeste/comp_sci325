@@ -31,8 +31,8 @@
       (let ((next-token-index (next-index tr-delim tr-str tr-curr-index)))
 	(if (null next-token-index)
 	    (values nil nil)
-	    (let*((next-delim-index (position tr-delim tr-str :start next-token-index))
-		  (token (subseq tr-str next-token-index next-delim-index)))
+	    (let* ((next-delim-index (position tr-delim tr-str :start next-token-index))
+		   (token (subseq tr-str next-token-index next-delim-index)))
 	      (values token (1+ tr-curr-index)))))))
 
 (defun extract-token-other (tr-delim tr-str tr-curr-index)
