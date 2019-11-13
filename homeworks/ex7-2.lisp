@@ -1,11 +1,12 @@
 (defun map-file (function pathname)
   (with-open-file (in pathname)
-    (do ((exp (read in nil 'the-end) (read in nil 'the-end)))
-	((eql exp 'the-end))
+    (do* ((g (gensym) g)
+		  (exp (read in nil g) (read in nil g)))
+		 ((eql exp g))
       (funcall function exp))))
 
 (defun map-stream (function stream)
-  (do ((exp (read stream nil 'the-end-my-life) (read stream nil 'the-end-my-life)))
-      ((eql exp 'the-end-my-life))
-    (funcall function exp)))
-
+  (do* ((g (gensym) g)
+		(exp (read stream nil g) (read stream nil g)))
+	   ((eql exp g))
+	(funcall function exp)))
