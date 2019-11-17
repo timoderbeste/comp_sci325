@@ -11,13 +11,14 @@
     :initform nil
     :accessor curr-index)))
 
-
 (defun next-token-start (delim str curr-index)
-  (and curr-index
-       (if (eql #\space delim)
-	   (position delim str :test-not #'equal :start curr-index)
-	   curr-index)))
-  
+  (cond ((not curr-index) nil)
+	((and (= curr-index (length str)) (not (eql delim #\space))) curr-index)
+	((and (< curr-index (length str)) (eql #\space delim))
+	 (position delim str :test-not #'equal :start curr-index))
+	((< curr-index (length str)) curr-index)
+	(t nil)))
+
 (defun next-token-end (delim str start)
   (position delim str :start start))
 
@@ -29,9 +30,10 @@
   (curr-index tr))
 
 (defmethod next-token (tr)
-  (if (or (null (curr-index tr)) (= (length (str tr)) (curr-index tr)))
-      (values (if (eql (delim tr) #\space) nil "") nil)
-      (let* ((start (next-token-start (delim tr) (str tr) (curr-index tr)))
-	     (end (next-token-end (delim tr) (str tr) start)))
-	(setf (curr-index tr) (next-token-start (delim tr) (str tr) (and end (1+ end))))
-	(subseq (str tr) start end))))
+  (cond ((and (not (next-token-p tr)) (eql (delim tr) #\space)) nil)
+	((and (not (next-token-p tr)) (not (eql (delim tr) #\space))) "")
+	(t
+	 (let* ((start (next-token-start (delim tr) (str tr) (curr-index tr)))
+		(end (next-token-end (delim tr) (str tr) start)))
+	   (setf (curr-index tr) (next-token-start (delim tr) (str tr) (and end (1+ end))))
+	   (subseq (str tr) start end)))))
