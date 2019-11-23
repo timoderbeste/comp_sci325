@@ -1,15 +1,13 @@
 (defun gnth (n glist)
-  (if (= n 0)
-      (gcar glist)
-      (gnth (1- n) (gcdr glist))))
+  (do ((i 0 (1+ i))
+       (rest glist (gcdr rest)))
+      ((= i n) (gcar rest))))
 
 (defun gmap (function glist)
   (if (gnull glist)
       nil
       (gcons (funcall function (gcar glist))
 	     (gmap function (gcdr glist)))))
-
-
 
 ;;; I think pred is a better variable name here?
 (defun gfilter (pred glist)
