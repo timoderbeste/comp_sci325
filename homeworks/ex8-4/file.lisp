@@ -1,4 +1,6 @@
-(defpackage "FILE")
+(defpackage "FILE"
+  (:use "COMMON-LISP" "RING")
+  (:export "FILE-SUBST" "STREAM-SUBST"))
 
 (in-package "FILE")
 
