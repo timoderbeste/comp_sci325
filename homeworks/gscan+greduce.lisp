@@ -5,14 +5,15 @@
       (gcons (funcall fn val (gcar glist))
 	     (gscan fn (gcdr glist) (funcall fn val (gcar glist))))))
 
-(defun greduce-helper (fn glist curr start end acc)
-  (cond ((and end (= curr end)) acc)
-	((gnull glist) acc)
-	((< curr start)
-	 (greduce-helper fn (gcdr glist) (1+ curr) start end acc))
-	(t
-	 (greduce-helper fn (gcdr glist) (1+ curr) start end (funcall fn acc (gcar glist))))))
-	
-
 (defun greduce (fn glist &key (start 0) (end nil) (initial-value nil))
-  (greduce-helper fn glist 0 start end initial-value))
+  (if (gnull glist)
+      initial-value
+      (do* ((curr-index 0 (1+ curr-index))
+	    (rest glist (gcdr rest))
+	    (acc (if (= start curr-index)
+		     (funcall fn initial-value (gcar rest))
+		     initial-value)
+		 (if (>= curr-index start)
+		     (funcall fn acc (gcar rest))
+		     acc)))
+	   ((or (and end (= curr-index (1- end))) (and (not end) (gnull (gcdr rest)))) acc))))
