@@ -1,7 +1,8 @@
+;;; I am checking if rest is gnull. But even without it it still seems to work. 
 (defun gnth (n glist)
   (do ((i 0 (1+ i))
        (rest glist (gcdr rest)))
-      ((= i n) (gcar rest))))
+      ((or (= i n) (gnull rest)) (gcar rest))))
 
 (defun gmap (function glist)
   (if (gnull glist)
