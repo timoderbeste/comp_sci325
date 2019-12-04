@@ -55,3 +55,7 @@
 	       (read-line str nil 'eof)))
 	((eql line 'eof) root)
       (add-word line root))))
+
+(defmethod print-object ((root trie) out)
+  (print-unreadable-object (root out :type t)
+    (format out "~A ~A" (trie-word root) (trie-count root))))
