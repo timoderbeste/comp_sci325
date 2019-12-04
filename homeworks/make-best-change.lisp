@@ -3,7 +3,10 @@
       (list sum (apply #'+ prev-comb) prev-comb)
       (do ((curr-coin-type (car coin-types))
 	   (count 0 (1+ count))
-	   (curr-comb nil (explore-comb (- sum (* count curr-coin-type)) (cdr coin-types) (cons count prev-comb) comp)))
+	   (curr-comb nil (explore-comb (- sum (* count curr-coin-type))
+					(cdr coin-types)
+					(cons count prev-comb)
+					comp)))
 	  ((< (- sum (* count curr-coin-type)) 0) (funcall comp curr-comb) curr-comb)
 	(when curr-comb
 	  (funcall comp curr-comb)))))
