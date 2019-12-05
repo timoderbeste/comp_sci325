@@ -8,21 +8,25 @@
 	(t
 	 (do ((curr-coin-type (car coin-types))
 	      (count 0 (1+ count))
-	      (curr-comb nil (explore-comb (- sum (* count curr-coin-type))
-					   (cdr coin-types)
-					   comp
-					   (cons count prev-comb))))
+	      (curr-comb
+	       nil
+	       (explore-comb (- sum (* count curr-coin-type))
+			     (cdr coin-types)
+			     comp
+			     (cons count prev-comb))))
 	     ((< (- sum (* count curr-coin-type)) 0) (funcall comp curr-comb) curr-comb)
 	   (when curr-comb
 	     (funcall comp curr-comb))))))
 
 (defun make-best-change (sum &optional (coin-types '(25 10 5 1)))
   (let ((best-comb nil))
-    (explore-comb sum coin-types (lambda (curr-comb)
-				   (when (or (null best-comb)
-					     (< (car curr-comb) (car best-comb))
-					     (and (= (car curr-comb) (car best-comb))
-						  (< (cadr curr-comb) (cadr best-comb))))
-				     (setf best-comb curr-comb))))
+    (explore-comb sum
+		  coin-types
+		  (lambda (curr-comb)
+		    (when (or (null best-comb)
+			      (< (car curr-comb) (car best-comb))
+			      (and (= (car curr-comb) (car best-comb))
+				   (< (cadr curr-comb) (cadr best-comb))))
+		      (setf best-comb curr-comb))))
    ;;; (print best-comb)
     (values-list (reverse (caddr best-comb)))))
