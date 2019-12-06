@@ -9,19 +9,32 @@
    (word
     :initarg :word
     :initform nil
-    :accessor trie-word)))
+    :accessor trie-word)
+   (word-count
+    :initarg :word-count
+    :initform 0
+    :accessor trie-word-count)))
 
 (defmethod make-trie ()
   (make-instance 'trie))
 
+(defmethod subtrie-helper (curr-char (root trie) &optional (add nil))
+  (cond ((null curr-char)
+	 nil)
+	(add
+	 (unless (assoc curr-char (trie-children root))
+	   (push (cons curr-char (make-trie)) (trie-children root))))
+	(t
+	 (cdr (assoc curr-char (trie-children root))))))
+
 (defmethod add-word-helper (word idx (root trie))
+  (incf (trie-word-count root))
   (cond ((= idx (length word))
 	 (setf (trie-word root) word)
 	 root)
 	(t
 	 (let ((curr-char (char word idx)))
-	   (unless (assoc curr-char (trie-children root))
-	     (push (cons curr-char (make-trie)) (trie-children root)))
+	   (subtrie-helper curr-char root t)
 	   (add-word-helper word (1+ idx) (cdr (assoc curr-char (trie-children root))))))))
 
 (defmethod add-word (word (root trie))
@@ -30,20 +43,14 @@
 (defmethod subtrie ((root trie) &rest chars)
   (if (null chars)
       root
-      (let ((child (cdr (assoc (car chars) (trie-children root)))))
+      (let ((child (subtrie-helper (car chars) root)))
 	(if child
 	    (apply #'subtrie child (cdr chars))
 	    nil))))
 
 (defmethod trie-count ((root trie))
-  (let ((curr-count (if (trie-word root) 1 0)))
-    (if (null root)
-	curr-count
-	(do ((rest-children (trie-children root) (cdr rest-children))
-	     (count curr-count (+ count (trie-count (cdr (car rest-children))))))
-	    ((null rest-children) count)))))
-
-
+  (trie-word-count root))
+  
 (defmethod mapc-trie (fn (root trie))
   (do ((rest-children (trie-children root) (cdr rest-children)))
       ((null rest-children) root)
