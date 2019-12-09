@@ -18,7 +18,7 @@
 (defmethod make-trie ()
   (make-instance 'trie))
 
-(defmethod subtrie-helper (curr-char (root trie) &optional (add nil))
+(defmethod get-trie-child (curr-char (root trie) &optional (add nil))
   (cond ((null curr-char)
 	 nil)
 	(add
@@ -34,19 +34,22 @@
 	 root)
 	(t
 	 (let ((curr-char (char word idx)))
-	   (subtrie-helper curr-char root t)
+	   (get-trie-child curr-char root t)
 	   (add-word-helper word (1+ idx) (cdr (assoc curr-char (trie-children root))))))))
 
 (defmethod add-word (word (root trie))
   (add-word-helper word 0 root))
 
-(defmethod subtrie ((root trie) &rest chars)
+(defmethod subtrie-helper ((root trie) chars)
   (if (null chars)
       root
-      (let ((child (subtrie-helper (car chars) root)))
+      (let ((child (get-trie-child (car chars) root)))
 	(if child
-	    (apply #'subtrie child (cdr chars))
+	    (subtrie-helper child (cdr chars))
 	    nil))))
+
+(defmethod subtrie ((root trie) &rest chars)
+  (subtrie-helper root chars))
   
 (defmethod mapc-trie (fn (root trie))
   (do ((rest-children (trie-children root) (cdr rest-children)))
