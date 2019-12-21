@@ -2,7 +2,7 @@
 (defmacro nth-expr (n &rest exprs)
   `(case ,n
      ,@(let ((i 0))
-	 (mapcar #'(lambda(expr)
+	 (mapcar #'(lambda (expr)
 		     `(,(incf i) (if `(= i n) ,expr nil)))
 		  exprs))))
 
